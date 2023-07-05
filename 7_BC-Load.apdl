@@ -1,0 +1,63 @@
+!*******************************************************************************
+!				Граничные условия и нагрузка
+!*******************************************************************************
+*IF,CP_piezo_FLAG,EQ,1,THEN
+		!создание компонент электродов	
+	SELTOL,1E-5
+	CSYS,11
+	ASEL,S,LOC,X,Radius+Piezo_size_Z
+	NSLA,S,1
+	*GET,Piezo_top_node,NODE,0,NUM,MIN
+	CP,1,VOLT,ALL
+
+	ESEL,S,TYPE,,2
+	NSLE,S,ALL
+	NSEL,R,LOC,X,Radius
+	*GET,Piezo_bot_node,NODE,0,NUM,MIN
+	CP,2,VOLT,ALL
+*ELSE
+	SELTOL,1E-5
+	ALLS
+	CSYS,11
+	ASEL,S,LOC,X,Radius+Piezo_size_Z
+	NSLA,S,1
+	CM,Piezo_top_nodes,NODE
+	
+	ALLS
+	ESEL,S,TYPE,,2
+	NSLE,S,ALL
+	NSEL,R,LOC,X,Radius
+	CM,Piezo_bot_nodes,NODE
+*ENDIF
+
+	!граничные условия оболочки
+ALLS
+NSEL,S,LOC,Y,-Alpha/2
+NSEL,A,LOC,Y,Alpha/2
+! NSEL,S,LOC,Z,Length/2
+! NSEL,A,LOC,Z,-Length/2
+D,ALL,ALL
+
+	!напряжение на пьезо
+ALLS
+*IF,CP_piezo_FLAG,EQ,1,THEN
+	D,Piezo_bot_node,VOLT,0
+	D,Piezo_top_node,VOLT,Piezo_VOLT
+*ELSE
+	ALLS
+	CMSEL,S,Piezo_bot_nodes,NODE
+	D,ALL,VOLT,0
+	CMSEL,S,Piezo_top_nodes,NODE
+	D,ALL,VOLT,Piezo_VOLT
+*ENDIF
+
+	!гравитация
+*IF,Gravity_FLAG,EQ,1,THEN
+	ALLS
+	ACEL,,,9.81
+*ENDIF
+
+*IF,Save_DB_FLAG,EQ,1,THEN
+	SAVE,'H:\Work\Supersonic\_shallow shell with piezo\CFFF_300x25_1pzt.DB',,,ALL
+	*GO,:1
+*ENDIF

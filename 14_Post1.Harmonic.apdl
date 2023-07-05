@@ -1,0 +1,34 @@
+!*******************************************************************************
+!				HARMONIC
+!*******************************************************************************
+/POST1
+FILE,,RSTP
+
+CSYS,0
+RSYS,0
+SELTOL,1E-2
+SENSOR_POINT = NODE(0,Piezo_A_offset-Chord/2,0)
+SELTOL,1E-8
+
+*SET,HAR_RESULT
+*DIM,HAR_RESULT,TABLE,FRQ_SUBST
+
+*DO,I,1,FRQ_SUBST
+	SET,,,,,,,2*I-1	
+	*GET,ACTIVE_FRQ,ACTIVE,0,SET,FREQ
+	AMPLITUDE_Re = UZ(SENSOR_POINT)
+	SET,,,,,,,2*I	
+	AMPLITUDE_Im = UZ(SENSOR_POINT)
+	
+	HAR_RESULT(I,0) = ACTIVE_FRQ
+	HAR_RESULT(I,1) = SQRT(AMPLITUDE_Re**2+AMPLITUDE_Im**2)
+*ENDDO
+
+*VPLOT,HAR_RESULT(1,0),HAR_RESULT(1,1)
+
+*IF,GENER_DATA_FILE_FLAG,EQ,1,THEN
+	*CFOPEN,FILENAME(1,1)
+	*VWRITE,HAR_RESULT(1,0),HAR_RESULT(1,1)
+(E23.16,2x,E23.16) 
+	*CFCLOS		
+*ENDIF

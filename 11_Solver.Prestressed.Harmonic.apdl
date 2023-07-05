@@ -1,0 +1,16 @@
+!*******************************************************************************
+!				Решение гармонической задачи
+!*******************************************************************************	
+		/SOLU
+		ANTYPE,STATIC,RESTART,,,PERTURB
+		PERTURB,HARMONIC,,,PARKEEP
+		SOLVE,ELFORM
+		
+		HROPT,FULL		
+		BETAD,3E-6
+		HARFRQ,FRQ_START,FRQ_FINISH
+		NSUBST,FRQ_SUBST
+		ACEL,,,1
+		SOLVE
+		FINISH
+		

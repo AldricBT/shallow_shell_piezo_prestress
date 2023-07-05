@@ -1,0 +1,11 @@
+FINISH
+/CLEAR,NOSTART
+/PREP7
+
+/INPUT,'H:\Work\Supersonic\_shallow shell with piezo\_project\2_parameters.apdl'
+
+/INPUT,'H:\Work\Supersonic\_shallow shell with piezo\_project\3_derived parameters.apdl'
+
+/INPUT,'H:\Work\Supersonic\_shallow shell with piezo\_project\4_materials.apdl'
+
+

@@ -1,0 +1,26 @@
+! производные параметры	
+*AFUN,DEG
+Alpha = 4*atan(2*Rise/Chord)	!УГОЛ ВСЕЙ ОБОЛОЧКИ
+Radius = Rise/(1-cos(Alpha/2))
+Ra = Radius/Length
+
+	!пьезо
+Piezo_angle_offset = Piezo_A_offset/Radius/PI*180		!Piezo_A_offset через угол	
+Piezo_angle_gap = Piezo_A_gap/Radius/PI*180				!Piezo_A_gap через угол	
+Piezo_angle_width = Piezo_size_Y/Radius/PI*180			!Piezo_size_Y через угол
+Piezo_blc_size_Y = 2*Radius*SIN(Piezo_angle_width/2)	!Ширина параллелепипеда для вырезания пьезо с учетом его искривления по окружности
+
+!определение максимального заполнения пьезо в случае, если указано много пьезо
+!по длине Х
+*IF,Length,LT,2*Piezo_X_offset + Num_of_piezo_X*Piezo_size_X + (Num_of_piezo_X-1)*Piezo_X_gap,THEN
+	Num_of_piezo_X = (Length - 2*Piezo_X_offset + Piezo_X_gap)/(Piezo_size_X + Piezo_X_gap)
+	Num_of_piezo_X = Num_of_piezo_X - MOD(Num_of_piezo_X,1)
+	Piezo_X_gap = (Length - 2*Piezo_X_offset - Num_of_piezo_X*Piezo_size_X)/(Num_of_piezo_X - 1)
+*ENDIF
+
+!по окружности A
+*IF,Alpha,LT,2*Piezo_angle_offset + Num_of_piezo_A*Piezo_angle_width + (Num_of_piezo_A-1)*Piezo_angle_gap,THEN
+	Num_of_piezo_A = (Alpha - 2*Piezo_angle_offset + Piezo_angle_gap)/(Piezo_angle_width + Piezo_angle_gap)
+	Num_of_piezo_A = Num_of_piezo_A - MOD(Num_of_piezo_A,1)
+	Piezo_angle_gap = (Alpha - 2*Piezo_angle_offset - Num_of_piezo_A*Piezo_angle_width)/(Num_of_piezo_A - 1)
+*ENDIF

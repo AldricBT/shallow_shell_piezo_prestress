@@ -1,0 +1,29 @@
+!*******************************************************************************
+!				MODAL
+!*******************************************************************************
+	/POST1
+	FILE,,RSTP
+
+! СОЗДАНИЕ ВЫХОДНОГО ФАЙЛА
+	*IF,GENER_DATA_FILE_FLAG,EQ,1,THEN
+		SET,,,,,,,1
+		*GET,FRQ_Re,ACTIVE,0,SET,FREQ
+		SET,,,,,,,2
+		*GET,FRQ_Im,ACTIVE,0,SET,FREQ
+		*CFOPEN,FILENAME(1,1)
+		*VWRITE,FRQ_Re,FRQ_Im
+(E23.16,2x,E23.16)
+		*CFCLOS
+
+		*DO,I,2,NumOfFrq
+			SET,,,,,,,(2*I-1)
+			*GET,FRQ_Re,ACTIVE,0,SET,FREQ
+			SET,,,,,,,2*I
+			*GET,FRQ_Im,ACTIVE,0,SET,FREQ
+			*CFOPEN,FILENAME(1,1),,,APPEND
+			*VWRITE,FRQ_Re,FRQ_Im
+(E23.16,2x,E23.16) 
+			*CFCLOS
+		*ENDDO
+	*ENDIF
+	
