@@ -1,13 +1,13 @@
 !*******************************************************************************
-	!				Решение модальной задачи
-	!*******************************************************************************
-		/SOLU
-		ANTYPE,STATIC,RESTART,,,PERTURB
-		PERTURB,MODAL,,,allkeep
-		SOLVE,ELFORM
+!				Решение модальной задачи
+!*******************************************************************************
+	/SOLU
+	ANTYPE,STATIC,RESTART,,,PERTURB
+	PERTURB,MODAL,,,allkeep
+	SOLVE,ELFORM
 
-		MODOPT,QRDAMP,NumOfFrq,,,ON
-		MXPAND,NumOfFrq,,,YES
-		SOLVE
-		FINISH
-		
+	MODOPT,QRDAMP,NumOfFrq,,,ON
+	MXPAND,NumOfFrq,,,YES
+	SOLVE
+	FINISH
+	
